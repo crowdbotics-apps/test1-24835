@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -12,18 +13,25 @@ class CustomText(models.Model):
     app from the project.
     """
 
-    title = models.CharField(max_length=150)
+    title = models.CharField(
+        max_length=150,
+    )
+    project = models.ManyToManyField(
+        "home.HomePage",
+        blank=True,
+        related_name="customtext_project",
+    )
 
     def __str__(self):
         return self.title
 
     @property
     def api(self):
-        return f'/api/v1/customtext/{self.id}/'
+        return f"/api/v1/customtext/{self.id}/"
 
     @property
     def field(self):
-        return 'title'
+        return "title"
 
 
 class HomePage(models.Model):
@@ -32,12 +40,13 @@ class HomePage(models.Model):
     successfuly built. All references to it should be removed in order to remove this
     app from the project.
     """
+
     body = models.TextField()
 
     @property
     def api(self):
-        return f'/api/v1/homepage/{self.id}/'
+        return f"/api/v1/homepage/{self.id}/"
 
     @property
     def field(self):
-        return 'body'
+        return "body"
